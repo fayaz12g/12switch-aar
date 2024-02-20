@@ -7,7 +7,7 @@ def download_extract_copy(input_folder, mod_name):
     import getpass
 
     # URL of the ZIP file
-    zip_url = "https://github.com/fayaz12g/aar-files/raw/main/12switch/body.zip"
+    zip_url = "https://github.com/fayaz12g/aar-files/raw/main/12switch/full.zip"
 
     username = getpass.getuser()
     directory_path = f"C:/Users/{username}/AppData/Roaming/AnyAspectRatio/perm/12switch"
@@ -19,7 +19,7 @@ def download_extract_copy(input_folder, mod_name):
     else:
         print(f"Directory {directory_path} already exists.")
     perm_folder = f"C:/Users/{username}/AppData/Roaming/AnyAspectRatio/perm/12switch"
-    zip_file_source = os.path.join(perm_folder, "body.zip")
+    zip_file_source = os.path.join(perm_folder, "full.zip")
 
     if not os.path.isfile(zip_file_source):
         # Download the ZIP file

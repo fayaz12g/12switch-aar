@@ -311,10 +311,18 @@ def select_mario_folder():
     # visual_fixes = create_visuals(do_screenshot.get(), do_disable_fxaa.get(), do_disable_dynamicres.get())
     # create_patch_files(patch_folder, str(ratio_value), str(scaling_factor), visual_fixes)
 
-    # Decomperss SZS and Lyarc Files
+    # Decomperss SZS Body Files
     romfs_folder = os.path.join(input_folder, mod_name, "romfs", "NX32", "common", "layout", "body")
-    parts_folder = os.path.join(input_folder, mod_name, "romfs", "NX32", "common", "layout", "parts")
     for root, dirs, files in os.walk(romfs_folder):
+        for file in files:
+            if file.lower().endswith(".szs"):
+                file_path = os.path.join(root, file)
+                decompress_folder = os.path.join(root)
+                extract_blarc(file_path, decompress_folder)
+    
+    # Decomperss SZS Parts Files
+    parts_folder = os.path.join(input_folder, mod_name, "romfs", "NX32", "common", "layout", "parts")
+    for root, dirs, files in os.walk(parts_folder):
         for file in files:
             if file.lower().endswith(".szs"):
                 file_path = os.path.join(root, file)
@@ -324,10 +332,23 @@ def select_mario_folder():
     # Perform Pane Strecthing
     patch_blarc(str(ratio_value), HUD_pos, text_folder)
     
-    # Compress all remaining folders to SZS and delete them
+    # Compress all remaining body folders to SZS and delete them
     for dir_name in os.listdir(romfs_folder):
         level = 1
         dir_path = os.path.join(romfs_folder, dir_name)
+        if os.path.isdir(dir_path):
+            for sub_dir_name in os.listdir(dir_path):
+                sub_dir_path = os.path.join(dir_path, sub_dir_name)
+                delete_path = os.path.join(dir_path, sub_dir_name)
+                if os.path.isdir(sub_dir_path):
+                    szs_output_path = os.path.join(dir_path, f"{sub_dir_name}.szs")
+                    pack_folder_to_blarc(sub_dir_path, szs_output_path, level)
+                    shutil.rmtree(delete_path)
+
+    # Compress all remaining parts folders to SZS and delete them
+    for dir_name in os.listdir(parts_folder):
+        level = 1
+        dir_path = os.path.join(parts_folder, dir_name)
         if os.path.isdir(dir_path):
             for sub_dir_name in os.listdir(dir_path):
                 sub_dir_path = os.path.join(dir_path, sub_dir_name)
