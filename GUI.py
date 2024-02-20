@@ -312,7 +312,8 @@ def select_mario_folder():
     # create_patch_files(patch_folder, str(ratio_value), str(scaling_factor), visual_fixes)
 
     # Decomperss SZS and Lyarc Files
-    romfs_folder = os.path.join(input_folder, mod_name, "romfs", "NX32", "common", "layout", "parts")
+    romfs_folder = os.path.join(input_folder, mod_name, "romfs", "NX32", "common", "layout", "body")
+    parts_folder = os.path.join(input_folder, mod_name, "romfs", "NX32", "common", "layout", "parts")
     for root, dirs, files in os.walk(romfs_folder):
         for file in files:
             if file.lower().endswith(".szs"):
