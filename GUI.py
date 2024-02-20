@@ -312,11 +312,13 @@ def select_mario_folder():
     # create_patch_files(patch_folder, str(ratio_value), str(scaling_factor), visual_fixes)
 
     # Decomperss SZS and Lyarc Files
-    romfs_folder = os.path.join(input_folder, mod_name, "romfs", "LayoutData")
-    for file in os.walk(romfs_folder):
-        if file.lower().endswith(".szs"):
-            file_path = os.path.join(romfs_folder, file)
-            extract_blarc(file_path, romfs_folder)
+    romfs_folder = os.path.join(input_folder, mod_name, "romfs", "NX32", "common", "layout", "parts")
+    for root, dirs, files in os.walk(romfs_folder):
+        for file in files:
+            if file.lower().endswith(".szs"):
+                file_path = os.path.join(root, file)
+                decompress_folder = os.path.join(root)
+                extract_blarc(file_path, decompress_folder)
 
     # Perform Pane Strecthing
     patch_blarc(str(ratio_value), HUD_pos, text_folder)
@@ -325,10 +327,14 @@ def select_mario_folder():
     for dir_name in os.listdir(romfs_folder):
         level = 1
         dir_path = os.path.join(romfs_folder, dir_name)
-        if os.path.isdir(os.path.join(romfs_folder, dir_name)):
-            szs_output_path = os.path.join(romfs_folder, f"{dir_name}.szs")
-            pack_folder_to_blarc(os.path.join(romfs_folder, dir_name), szs_output_path, level)
-            shutil.rmtree(dir_path)
+        if os.path.isdir(dir_path):
+            for sub_dir_name in os.listdir(dir_path):
+                sub_dir_path = os.path.join(dir_path, sub_dir_name)
+                delete_path = os.path.join(dir_path, sub_dir_name)
+                if os.path.isdir(sub_dir_path):
+                    szs_output_path = os.path.join(dir_path, f"{sub_dir_name}.szs")
+                    pack_folder_to_blarc(sub_dir_path, szs_output_path, level)
+                    shutil.rmtree(delete_path)
 
     if open_when_done.get() == True:
         print ("Complete! Opening output folder.")
