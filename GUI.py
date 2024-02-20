@@ -29,13 +29,12 @@ import sys
 import shutil
 import psutil
 from visuals import create_visuals
-from controller import controller_files
 
 #######################
 #### Create Window ####
 #######################
 
-tool_version = "1.4.2"
+tool_version = "1.0.0"
 
 root = customtkinter.CTk()
 root.title(f"Fayaz's Settings {tool_version} for 1-2 Switch")
