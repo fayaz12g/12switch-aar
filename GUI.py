@@ -38,12 +38,12 @@ from controller import controller_files
 tool_version = "1.4.2"
 
 root = customtkinter.CTk()
-root.title(f"Fayaz's Settings {tool_version} for Super Mario Odyssey")
+root.title(f"Fayaz's Settings {tool_version} for 1-2 Switch")
 root.geometry("500x720")
 
 customtkinter.set_appearance_mode("system")
 customtkinter.set_default_color_theme("blue")  
-windowtitle = customtkinter.CTkLabel(master=root, font=(CTkFont, 20), text="Fayaz's SMO Utility {tool_version}")
+windowtitle = customtkinter.CTkLabel(master=root, font=(CTkFont, 20), text="Fayaz's 1-2 Switch Utility {tool_version}")
 
 ###############################################
 ###########    GLOBAL SETTINGS      ###########
@@ -275,10 +275,10 @@ def select_mario_folder():
     scaling_factor = (16/9) / (int(numerator_entry.get()) / int(denominator_entry.get()))
     username = getpass.getuser()
     if output_yuzu.get() is True:
-        input_folder = f"C:/Users/{username}/AppData/Roaming/yuzu/load/0100000000010000"
+        input_folder = f"C:/Users/{username}/AppData/Roaming/yuzu/load/01000320000CC000"
         process_name = "yuzu.exe"
     if output_ryujinx.get() is True:
-        input_folder = f"C:/Users/{username}/AppData/Roaming/Ryujinx/mods/contents/0100000000010000"
+        input_folder = f"C:/Users/{username}/AppData/Roaming/Ryujinx/mods/contents/01000320000CC000"
         process_name = "ryujinx.exe"
     else:
         process_name = "yuzu.exe"
@@ -305,19 +305,15 @@ def select_mario_folder():
     if os.path.exists(text_folder):
         shutil.rmtree(text_folder)
 
-    # Download the SMO Layout Files
+    # Download the 1-2 Switch Layout Files
     download_extract_copy(input_folder, mod_name)
 
-    # Create the PCHTXT Files
-    visual_fixes = create_visuals(do_screenshot.get(), do_disable_fxaa.get(), do_disable_dynamicres.get())
-    create_patch_files(patch_folder, str(ratio_value), str(scaling_factor), visual_fixes)
-    romfs_folder = os.path.join(input_folder, mod_name, "romfs", "LayoutData")
-    theromfs_folder = os.path.join(input_folder, mod_name, "romfs")
-
-    # Download and put Controlelr Files in Place
-    controller_files(controller_type.get(), theromfs_folder)
+    # # Create the PCHTXT Files
+    # visual_fixes = create_visuals(do_screenshot.get(), do_disable_fxaa.get(), do_disable_dynamicres.get())
+    # create_patch_files(patch_folder, str(ratio_value), str(scaling_factor), visual_fixes)
 
     # Decomperss SZS and Lyarc Files
+    romfs_folder = os.path.join(input_folder, mod_name, "romfs", "LayoutData")
     for file in os.listdir(romfs_folder):
         if file.lower().endswith(".szs"):
             file_path = os.path.join(romfs_folder, file)
@@ -325,15 +321,6 @@ def select_mario_folder():
 
     # Perform Pane Strecthing
     patch_blarc(str(ratio_value), HUD_pos, text_folder)
-
-    # Compress layout folders and delete them
-    for root, dirs, files in os.walk(input_folder):
-        if "layout" in dirs:
-            level = -1
-            layout_folder_path = os.path.join(root, "layout")
-            layout_lyarc_path = os.path.join(root, "layout.lyarc")
-            pack_folder_to_blarc(layout_folder_path, layout_lyarc_path, level)
-            shutil.rmtree(layout_folder_path)
     
     # Compress all remaining folders to SZS and delete them
     for dir_name in os.listdir(romfs_folder):
@@ -677,7 +664,7 @@ notebook.add("Credits")
 
 credits_label = ClickableLabel(master=notebook.tab("Credits"), text=
                     ('Utility created by fayaz\n'
-                     'https://github.com/fayaz12g/smo-aar\n'
+                     'https://github.com/fayaz12g/12switch-aar\n'
                      'ko-fi.com/fayaz12\n'
                      '\n\nWith special help from\n'
                      'Christopher Fields (cfields7)\n'
