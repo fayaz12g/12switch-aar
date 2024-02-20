@@ -313,7 +313,7 @@ def select_mario_folder():
 
     # Decomperss SZS and Lyarc Files
     romfs_folder = os.path.join(input_folder, mod_name, "romfs", "LayoutData")
-    for file in os.listdir(romfs_folder):
+    for file in os.walk(romfs_folder):
         if file.lower().endswith(".szs"):
             file_path = os.path.join(romfs_folder, file)
             extract_blarc(file_path, romfs_folder)
